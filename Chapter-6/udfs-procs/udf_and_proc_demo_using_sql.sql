@@ -1,4 +1,5 @@
 
+/** SQL UDFs - overloading approach and use of session variables **/
 SET default_year = 1995;
     
 create or replace function get_order_volume(chosen_year NUMBER)
@@ -15,10 +16,20 @@ $$
     select count(*) from SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS where year(o_orderdate) = $default_year
 $$
 
+/** SQL UDFs - Default argument approach **/
+
+create or replace function get_order_volume(chosen_year NUMBER default 1995)
+returns NUMBER
+AS
+$$
+    select count(*) from SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS where year(o_orderdate) = chosen_year
+$$
+;
 
 --test function
 select get_order_volume();
 
+/** SQL Procedures **/
 create or replace procedure get_order_increase(chosen_year NUMBER)
 returns FLOAT NOT NULL
 language sql
