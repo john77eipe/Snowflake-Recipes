@@ -16,10 +16,17 @@ as
 $$
     const DEFAULT_YEAR = 1995;
     
+    /** Javascript stored procedures provides an implicit object called "snowflake" which can be used to execute SQL commands */
     res = snowflake
             .createStatement({
                 sqlText: `select count(*) from SNOWFLAKE_SAMPLE_DATA.TPCH_SF1.ORDERS where year(o_orderdate) = ${chosen_year}::number`
             }).execute();
+    /**
+     * The res variable is a ResultSet object. You only see one row at a time in a ResultSet, just as you can see one row at a time in a SQL cursor.
+     * Typically, after you retrieve a ResultSet, you iterate through it by repeating the following operations:
+     **  Call next() to get the next row.
+     **  Retrieve data from the current row by calling methods such as getColumnValue().
+     */
     res.next();
     order_vol_chosen_year = res.getColumnValue(1);
 
